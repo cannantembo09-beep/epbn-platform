@@ -562,3 +562,16 @@ People • Opportunities • Growth
   </text>
 
 </svg>
+DISCOVER → PILOT → VALIDATE → SCALE
+EPBN/
+│
+├── docs/
+├── research/
+├── architecture/
+├── governance/
+├── presentations/
+├── pilots/
+├── workflows/
+└── assets/
+
+This README will give your GitHub repository a much more professional and investor-ready appearance, positioning EPBN as an **intelligent operations and governance platform** rather than simply an AI project. It also aligns closely with the architecture in your EPBN_Parkrise_Intelligent_Operations_Presentation_v1.pdf. [1](https://onedrive.live.com?cid=60a89e97c9005781&id=60A89E97C9005781!s25c83f58218648fd9f15f5457a1130bf)
