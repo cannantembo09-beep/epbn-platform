@@ -575,3 +575,80 @@ EPBN/
 └── assets/
 
 This README will give your GitHub repository a much more professional and investor-ready appearance, positioning EPBN as an **intelligent operations and governance platform** rather than simply an AI project. It also aligns closely with the architecture in your EPBN_Parkrise_Intelligent_Operations_Presentation_v1.pdf. [1](https://onedrive.live.com?cid=60a89e97c9005781&id=60A89E97C9005781!s25c83f58218648fd9f15f5457a1130bf)
+# Effortless Precision Business Network (EPBN)
+
+https://img.shields.io/badge/License-MIT-blue.svg
+https://img.shields.io/badge/Status-Active-success
+https://img.shields.io/badge/Architecture-Intelligent_Operations-purple
+https://img.shields.io/badge/Governance-Evidence_First-orange
+https://img.shields.io/badge/AI-Human_Governed-green
+https://img.shields.io/badge/Stage-Discovery--to--Scale-blue
+https://img.shields.io/badge/Maintained-Yes-brightgreen
+
+> Turning operational information into measurable executive intelligence.
+> LICENSE
+> MIT License
+
+Copyright (c) 2026 Effortless Precision Business Network
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files...
+https://img.shields.io/badge/License-MIT-blue.svg
+Copyright © 2026 Effortless Precision Business Network (EPBN)
+
+All rights reserved.
+
+This repository, including its architecture, documentation,
+frameworks, workflows, visual assets, and operational models,
+is proprietary intellectual property of EPBN.
+
+No part may be reproduced, distributed, modified,
+or commercialized without written permission.
+https://img.shields.io/badge/License-Proprietary-red
+https://img.shields.io/badge/Version-0.1.0-blue
+https://img.shields.io/badge/Docs-Available-brightgreen
+https://img.shields.io/badge/Security-Governed-success
+https://img.shields.io/badge/Auditability-Built_In-informational
+https://img.shields.io/badge/Executive-Command_Centre-gold
+---
+
+## Intellectual Property
+
+EPBN (Effortless Precision Business Network) is an intelligent operations framework designed to connect information, diagnostics, governance, workflow orchestration, and executive decision support.
+
+Unless otherwise specified, all strategic frameworks, architecture designs, visual systems, operational models, and supporting materials are the intellectual property of EPBN.
+
+---
+
+## Contact
+
+For collaboration, pilot initiatives, architecture discussions, or partnership opportunities:
+
+**Effortless Precision Business Network (EPBN)**
+
+*"Effortless Precision. Intelligent Action. Measurable Impact."*
+# Effortless Precision Business Network (EPBN)
+
+https://img.shields.io/badge/License-Proprietary-red
+https://img.shields.io/badge/Status-Active-success
+https://img.shields.io/badge/Version-0.1.0-blue
+https://img.shields.io/badge/Architecture-Intelligent_Operations-purple
+https://img.shields.io/badge/Governance-Evidence_First-orange
+https://img.shields.io/badge/AI-Human_Governed-brightgreen
+https://img.shields.io/badge/Security-Governed-success
+https://img.shields.io/badge/Auditability-Built_In-informational
+https://img.shields.io/badge/Lifecycle-Discover→Pilot→Validate→Scale-blue
+
+> Turning operational information into measurable executive intelligence.
+> # Effortless Precision Business Network (EPBN)
+
+https://img.shields.io/badge/License-Proprietary-red](LICENSE)
+https://img.shields.io/badge/Status-Active-success](#)
+https://img.shields.io/badge/Version-0.1.0-blue](#)
+https://img.shields.io/badge/Architecture-Intelligent_Operations-purple](#)
+https://img.shields.io/badge/Governance-Evidence_First-orange](#)
+https://img.shields.io/badge/AI-Human_Governed-brightgreen](#)
+https://img.shields.io/badge/Security-Governed-success](#)
+
+> Turning operational information into measurable executive intelligence.
+> 
