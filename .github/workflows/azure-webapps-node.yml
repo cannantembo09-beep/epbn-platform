@@ -1,31 +1,15 @@
-# This workflow will build and push a node.js application to an Azure Web App when a commit is pushed to your default branch.
-#
-# This workflow assumes you have already created the target Azure App Service web app.
-# For instructions see https://docs.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-cli
-#
-# To configure this workflow:
-#
-# 1. Download the Publish Profile for your Azure Web App. You can download this file from the Overview page of your Web App in the Azure Portal.
-#    For more information: https://docs.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel#generate-deployment-credentials
-#
-# 2. Create a secret in your repository named AZURE_WEBAPP_PUBLISH_PROFILE, paste the publish profile contents as the value of the secret.
-#    For instructions on obtaining the publish profile see: https://docs.microsoft.com/azure/app-service/deploy-github-actions#configure-the-github-secret
-#
-# 3. Change the value for the AZURE_WEBAPP_NAME. Optionally, change the AZURE_WEBAPP_PACKAGE_PATH and NODE_VERSION environment variables below.
-#
-# For more information on GitHub Actions for Azure: https://github.com/Azure/Actions
-# For more information on the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# For more samples to get started with GitHub Action workflows to deploy to Azure: https://github.com/Azure/actions-workflow-samples
+name: Build and Deploy Node.js App to Azure Web App
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: your-app-name    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
-  NODE_VERSION: '20.x'                # set this to the node version to use
+  AZURE_WEBAPP_NAME: epbn-platform
+  AZURE_WEBAPP_PACKAGE_PATH: .
+  NODE_VERSION: '20.x'
 
 permissions:
   contents: read
@@ -33,54 +17,177 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
 
-    - name: npm install, build, and test
-      run: |
-        npm install
-        npm run build --if-present
-        npm run test --if-present
+      - name: Install dependencies
+        run: npm install
 
-    - name: Upload artifact for deployment job
-      uses: actions/upload-artifact@v4
-      with:
-        name: node-app
-        path: .
+      - name: Build application
+        run: npm run build --if-present
+
+      - name: Run tests
+        run: npm test --if-present
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-app
+          path: .
 
   deploy:
-    permissions:
-      contents: none
     runs-on: ubuntu-latest
     needs: build
+
+    permissions:
+      contents: none
+
     environment:
-      name: 'Development'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      name: Development
 
     steps:
-    - name: Download artifact from build job
-      uses: actions/download-artifact@v4
-      with:
-        name: node-app
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: node-app
 
-    - name: 'Deploy to Azure WebApp'
-      id: deploy-to-webapp
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}on:
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          
+  AZURE_WEBAPP_PACKAGE_PATH: .
+  AZURE_WEBAPP_PACKAGE_PATH: ./backend
+  run: npm install
+  run: |
+  cd backend
+  npm install
+  run: |
+  cd backend
+  npm run build --if-present
+  
   push:
     branches:
       - main
   workflow_dispatch:
-  
+  AZURE_WEBAPP_PUBLISH_PROFILE
+  Azure Portal
+→ App Service
+→ epbn-platform
+→ Get Publish Profile
+GitHub
+→ Repository
+→ Settings
+→ Secrets and variables
+→ Actions
+→ New repository secret
+AZURE_WEBAPP_PUBLISH_PROFILE
+name: Build and Deploy Node.js App to Azure Web App
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AZURE_WEBAPP_NAME: epbn-platform
+  AZURE_WEBAPP_PACKAGE_PATH: .
+  NODE_VERSION: '20.x'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run build
+        run: npm run build --if-present
+
+      - name: Run tests
+        run: npm test --if-present
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app
+          path: .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    environment:
+      name: Production
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          AZURE_CLIENT_ID
+AZURE_TENANT_ID
+AZURE_SUBSCRIPTION_ID
+az ad app create --display-name github-epbn-platform
+az ad sp create --id <APP_ID>
+az role assignment create \
+  --assignee <APP_ID> \
+  --role Contributor \
+  --scope /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>
+  az ad app federated-credential create \
+  --id <APP_ID> \
+  --parameters credential.json
+  {
+  "name": "github-main",
+  "issuer": "https://token.actions.githubusercontent.com",
+  "subject": "repo:YOUR_GITHUB_USERNAME/YOUR_REPOSITORY:ref:refs/heads/main",
+  "description": "GitHub Actions OIDC",
+  "audiences": [
+    "api://AzureADTokenExchange"
+  ]
+}
+Federated credential not found
+AADSTS700213
+Login failed with OIDC
+
 actions/checkout@v4
 actions/setup-node@v4
 actions/upload-artifact@v4
@@ -187,6 +294,118 @@ jobs:
 
     permissions:
       contents: read
+name: Build and Deploy Node.js App
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  NODE_VERSION: '20.x'
+  AZURE_WEBAPP_NAME: epbn-platform
+  AZURE_WEBAPP_PACKAGE_PATH: .
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build --if-present
+
+      - name: Test
+        run: npm test --if-present
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app
+          path: .
+
+  deploy-staging:
+    runs-on: ubuntu-latest
+    needs: build
+
+    environment:
+      name: Staging
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Staging Slot
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          slot-name: staging
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+
+    environment:
+      name: Production
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Production
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          Settings
+└── Environments
+    ├── Staging
+    └── Production
+    Required reviewers
+    main push
+   ↓
+Build
+   ↓
+Deploy to Staging
+   ↓
+Manual Approval
+   ↓
+Deploy to Production
 
     steps:
       - name: Download Build Artifact
